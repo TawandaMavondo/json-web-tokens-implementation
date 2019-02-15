@@ -73,20 +73,29 @@ UserSchema.pre('save',function(next){
     };
 });
 
+
 UserSchema.statics.findUser = function(email,password){
-    var user = this;
+    var User = this;
     return User.findOne({email}).then((user)=>{
         if(!user){
             return Promise.reject('No user found');
         }
 
-        return new Promise((resolve,reject)=>{
-            resolve(user)
-        })
+      return new Promise((resolve,reject)=>{
+         bcrypt.compare(password,user.password,(err,result)=>{
+             if(result){
+                 resolve(user)
+             }else{
+                 reject("Athentication Failed ")
+             }
+         });
+
+      });
+
+    }).catch((e)=>{
+        return Promise.reject(e);
     });
-
 }
-
 
 var User = mongoose.model("Users",UserSchema);
 module.exports ={User};
