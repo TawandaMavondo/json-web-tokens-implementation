@@ -1,0 +1,36 @@
+{
+  "name": "auth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "crypto-js": "^3.1.9-1",
+    "expect": "^23.6.0",
+    "express": "^4.16.4",
+    "hbs": "^4.0.1",
+    "jsonwebtoken": "^8.4.0",
+    "lodash": "^4.17.11",
+    "mongodb": "^3.1.13",
+    "moment": "^2.24.0",
+    "mongoose": "^5.4.6",
+    "multer": "^1.4.1",
+    "nodemon": "^1.18.9",
+    "request": "^2.88.0",
+    "rewire": "^4.0.1",
+    "socket.io": "^2.2.0",
+    "supertest": "^3.4.2",
+    "validator": "^10.11.0",
+    "yargs": "^12.0.5"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "author": "Tawanda Mavondo",
+  "license": "ISC"
+}
