@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require("validator");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const _ =  require('lodash');
 var UserSchema = new mongoose.Schema({
         name:{
             type:String,
@@ -42,13 +43,19 @@ var UserSchema = new mongoose.Schema({
             }
         }]
 })
+// Trim the data which is going to be sent to the client
+UserSchema.methods.toJSON = function(){
+    var user = this;
+    var userObj = user.toObject();
+    return  _.pick(userObj,['email','username','name','surname','_id']);
+}
+
 UserSchema.methods.generateUserToken=function(){
      var user = this;
      var access = "auth"
      var token = jwt.sign({_id:user._id.toHexString(),password:user.password,access},'salt').toString()
      user.tokens.push({access,token});
-
-
+    //  user.tokens.concat([access,token]);
 
    return user.save().then(()=>{
          return token
@@ -80,19 +87,19 @@ UserSchema.statics.findUser = function(email,password){
         if(!user){
             return Promise.reject('No user found');
         }
+        
 
       return new Promise((resolve,reject)=>{
          bcrypt.compare(password,user.password,(err,result)=>{
              if(result){
-                 resolve(user)
+                 resolve(user);
              }else{
                  reject("Athentication Failed ")
              }
          });
-
       });
-
     }).catch((e)=>{
+        console.log(e);
         return Promise.reject(e);
     });
 }

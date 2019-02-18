@@ -27,14 +27,18 @@ Router.post('/users',(req,res,next)=>{
     
 
 });
-
+// Loging route which neets email and password 
 Router.post('/users/login',(req,res)=>{
     var body = _.pick(req.body,['email','password']);
-
-
-    User.findUser(body.email,body.password).then((user)=>{
-    res.send(user);
+    
+    
+       return User.findUser(body.email,body.password).then((user)=>{
+       return user.generateUserToken().then((token)=>{
+            res.header('x-auth',token).send(user)
+        });
     }).catch((e)=>{res.status(400).send(e)});
+
+
 });
 
 
